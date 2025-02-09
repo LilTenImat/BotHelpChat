@@ -59,6 +59,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 		this.userId = this.user.id;
 		effect((onCleanup) => {
 			const chat = this.currentChat();
+			this.form.reset(null);
 			let scrollSub: Subscription | null = null;
 			if (chat) {
 				scrollSub = chat.messages$.subscribe(() => {
