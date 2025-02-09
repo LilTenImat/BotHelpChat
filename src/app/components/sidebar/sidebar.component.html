@@ -1,0 +1,6 @@
+@let currentChatList = chatList();
+@for (chat of currentChatList; track chat.reciever) {
+	<div>
+		{{ chat.reciever }}
+	</div>
+}

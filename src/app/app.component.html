@@ -1,1 +1,6 @@
-Hello, world!
+<header></header>
+<app-layout>
+	<app-sidebar sidebar [chatList]="(chatList$ | async) || []"></app-sidebar>
+	<app-chat chat [currentChat]="(currentChat$ | async) || null"></app-chat>
+</app-layout>
+<footer></footer>
