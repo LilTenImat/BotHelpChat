@@ -1,21 +1,25 @@
 @let chat = currentChat();
 @if (chat) {
-	<div class="chat-header">
-		<h3>Chat with: {{chat.reciever}}</h3>
-		@if ((chat.status$ | async) === chatStatus.Typing) {
-			<span>Typing...</span>
-		}
-	</div>
-	<div class="messages">
-		@let messages = chat.messages$ | async;
-		@for (message of messages; track message.id) {
-			<mat-card class="message" [ngClass]="{'my-own': message.sender === userId}">
-				<mat-card-content>
-					<p>{{ message.content }}</p>
-					<a class="sender" href="#" (click)="onSelectChat(message.sender)">{{ message.sender }}</a>
-				</mat-card-content>
-			</mat-card>
-		}
+	<mat-card>
+		<mat-card-content class="chat-header">
+			<h3>Chat with: {{chat.reciever}}</h3>
+			@if ((chat.status$ | async) === chatStatus.Typing) {
+				<span>Typing...</span>
+			}
+		</mat-card-content>
+	</mat-card>
+	<div  #messagesContainer class="messages-container">
+		<div class="messages">
+			@let messages = chat.messages$ | async;
+			@for (message of messages; track message.id) {
+				<mat-card class="message" [ngClass]="{'my-own': message.sender === userId}">
+					<mat-card-content>
+						<p>{{ message.content }}</p>
+						<a class="sender" href="#" (click)="onSelectChat(message.sender)">{{ message.sender }}</a>
+					</mat-card-content>
+				</mat-card>
+			}
+		</div>
 	</div>
 	<form class="input-container">
 		<mat-form-field appearance="outline">
@@ -26,6 +30,6 @@
 				[formControl]="form"
 			>
 		</mat-form-field>
-		<button mat-flat-button (click)="onSendMessage(chat.reciever)">Send</button>
+		<button mat-flat-button (click)="onSendMessage(chat.reciever)" type="submit">Send</button>
 	</form>
 }

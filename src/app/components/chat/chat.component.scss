@@ -4,9 +4,9 @@
 	width: 100%;
 	background: #dddddd;
 	flex-direction: column;
-	padding: 8px;
-	border-radius: 10px;
+	border-radius: var(--mat-sys-corner-medium);
 	gap: 20px;
+	height: 100%;
 }
 
 .chat-header {
@@ -14,14 +14,21 @@
 	justify-content: space-between;
 	align-items: center;
 	flex: 0 0 64px;
+	padding: 8px;
+}
+
+.messages-container {
+	overflow: hidden auto;
+	height: 100%;
 }
 
 .messages {
 	flex: 1 1 auto;
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	justify-content: flex-end;
 	gap: 20px;
+	padding: 0 8px;
 }
 
 .message {
@@ -45,6 +52,8 @@
 	display: flex;
 	gap: 20px;
 	align-items: baseline;
+	background-color: var(--mat-sys-surface);
+	padding: 8px;
 }
 
 mat-form-field {

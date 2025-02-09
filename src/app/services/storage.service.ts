@@ -29,9 +29,7 @@ export class StorageService {
 	public readonly messages$ = this.getMessages$();
 	public readonly statuses$ = this.getStatuses$();
 
-	constructor(private user: UserService) {
-		this.messages$.subscribe(console.log);
-	}
+	constructor(private user: UserService) {}
 
 	public chat(content: string, reciever: Reciever): void {
 		const message: ChatMessage = {

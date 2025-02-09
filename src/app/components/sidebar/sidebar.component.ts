@@ -10,13 +10,20 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { UserService } from '../../services';
+import { UserInfoMockComponent } from './user-info-mock.component';
 
 @Component({
 	selector: 'app-sidebar',
 	standalone: true,
 	templateUrl: './sidebar.component.html',
 	styleUrl: './sidebar.component.scss',
-	imports: [CommonModule, MatCardModule, MatDividerModule, MatListModule],
+	imports: [
+		CommonModule,
+		MatCardModule,
+		MatDividerModule,
+		MatListModule,
+		UserInfoMockComponent,
+	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {

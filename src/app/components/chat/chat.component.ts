@@ -1,9 +1,12 @@
 import {
 	ChangeDetectionStrategy,
 	Component,
+	effect,
+	ElementRef,
 	input,
 	OnDestroy,
 	OnInit,
+	ViewChild,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,9 +14,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { Chat, Reciever, StatusType } from '../../config';
+import { Chat, ChatMessage, Reciever, StatusType } from '../../config';
 import { ChatService, StorageService, UserService } from '../../services';
-import { debounceTime, filter, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import {
+	BehaviorSubject,
+	debounceTime,
+	filter,
+	Subject,
+	Subscription,
+	switchMap,
+	takeUntil,
+	tap,
+} from 'rxjs';
 @Component({
 	selector: 'app-chat',
 	standalone: true,
@@ -37,13 +49,30 @@ export class ChatComponent implements OnInit, OnDestroy {
 	protected readonly form = new FormControl<string | null>(null);
 
 	private readonly destroy$ = new Subject<void>();
-
+	@ViewChild('messagesContainer', { read: ElementRef })
+	messagesContainer?: ElementRef<HTMLDivElement>;
 	constructor(
 		private storage: StorageService,
 		private user: UserService,
 		private chat: ChatService
 	) {
 		this.userId = this.user.id;
+		effect((onCleanup) => {
+			const chat = this.currentChat();
+			let scrollSub: Subscription | null = null;
+			if (chat) {
+				scrollSub = chat.messages$.subscribe(() => {
+					if (this.messagesContainer) {
+						const element = this.messagesContainer.nativeElement;
+						setTimeout(() =>
+							element.scroll({ top: element.scrollHeight })
+						);
+					}
+				});
+			}
+
+			onCleanup(() => scrollSub?.unsubscribe());
+		});
 	}
 
 	public ngOnInit(): void {

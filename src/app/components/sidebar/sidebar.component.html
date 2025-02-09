@@ -1,9 +1,4 @@
-<mat-card appearance="outlined" class="user-info-mock">
-	<mat-card-content>
-		<div class="user-avatar-mock"></div>
-		<div class="user-name-mock" title="{{userName}}">{{ userName }}</div>
-	</mat-card-content>
-</mat-card>
+<app-user-info-mock class="desktop-only" [userName]="userName"/>
 @let currentChatList = chatList();
 @for (chat of currentChatList; track chat.reciever) {
 

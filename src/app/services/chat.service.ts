@@ -62,9 +62,8 @@ export class ChatService {
 
 	private getBroadcastChannel(): Chat {
 		const messages$ = this.storage.messages$.pipe(
-			tap(console.log),
 			filter((message) => message.reciever === 'all'),
-			scan((acc, curr) => [...acc, curr], <ChatMessage[]>[])
+			scan((acc, curr) => [curr, ...acc], <ChatMessage[]>[])
 		);
 
 		const status$ = this.storage.statuses$.pipe(
@@ -86,7 +85,7 @@ export class ChatService {
 				(message) =>
 					message.sender === sender || message.sender === this.userId
 			),
-			scan((acc, curr) => [...acc, curr], <ChatMessage[]>[])
+			scan((acc, curr) => [curr, ...acc], <ChatMessage[]>[])
 		);
 
 		const status$ = this.storage.statuses$.pipe(
