@@ -1,4 +1,5 @@
 import {
+	AfterViewChecked,
 	ChangeDetectionStrategy,
 	Component,
 	effect,
@@ -42,7 +43,7 @@ import {
 	styleUrl: './chat.component.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 	public currentChat = input<Chat | null>(null);
 	protected readonly chatStatus = StatusType;
 	protected readonly userId;
@@ -57,23 +58,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 		private chat: ChatService
 	) {
 		this.userId = this.user.id;
-		effect((onCleanup) => {
-			const chat = this.currentChat();
-			this.form.reset(null);
-			let scrollSub: Subscription | null = null;
-			if (chat) {
-				scrollSub = chat.messages$.subscribe(() => {
-					if (this.messagesContainer) {
-						const element = this.messagesContainer.nativeElement;
-						setTimeout(() =>
-							element.scroll({ top: element.scrollHeight })
-						);
-					}
-				});
-			}
-
-			onCleanup(() => scrollSub?.unsubscribe());
-		});
 	}
 
 	public ngOnInit(): void {
@@ -98,6 +82,13 @@ export class ChatComponent implements OnInit, OnDestroy {
 				takeUntil(this.destroy$)
 			)
 			.subscribe();
+	}
+
+	public ngAfterViewChecked(): void {
+		if (!this.messagesContainer) return;
+		const element = this.messagesContainer?.nativeElement;
+
+		element.scroll({ top: element.scrollHeight });
 	}
 
 	public ngOnDestroy(): void {
