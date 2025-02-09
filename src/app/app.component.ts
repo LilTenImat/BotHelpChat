@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { StorageService, UserService, ChatService } from './services';
 import { SidebarComponent, LayoutComponent, ChatComponent } from './components';
-import { StatusType } from './config';
+import { Reciever, StatusType } from './config';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -31,9 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this.storage.status(StatusType.Idle);
-		this.chat.createChat('all');
-		this.chat.selectChat('all');
+		this.storage.status(StatusType.Idle, 'all');
+		this.chat.selectChat();
 
 		this.storage.statuses$
 			.pipe(takeUntil(this.destroy$))
@@ -43,5 +42,9 @@ export class AppComponent implements OnInit, OnDestroy {
 	public ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
+	}
+
+	protected onChatSelected(event: Reciever | null): void {
+		this.chat.selectChat(event);
 	}
 }

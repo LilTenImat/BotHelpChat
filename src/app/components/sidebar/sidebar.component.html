@@ -1,6 +1,22 @@
+<mat-card appearance="outlined" class="user-info-mock">
+	<mat-card-content>
+		<div class="user-avatar-mock"></div>
+		<div class="user-name-mock" title="{{userName}}">{{ userName }}</div>
+	</mat-card-content>
+</mat-card>
 @let currentChatList = chatList();
 @for (chat of currentChatList; track chat.reciever) {
-	<div>
-		{{ chat.reciever }}
-	</div>
+
+	<mat-card appearance="raised" (click)="onSelectChat(chat.reciever)">
+		<mat-card-header>
+			<mat-card-subtitle>
+				{{chat.reciever}}
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			@if ((chat.status$ | async) === chatStatus.Typing) {
+				<span>Typing...</span>
+			}
+		</mat-card-content>
+	</mat-card>
 }

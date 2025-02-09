@@ -1,0 +1,43 @@
+:host {
+	display: flex;
+	gap: 20px;
+	padding: 8px;
+	flex-direction: column;
+}
+
+mat-card {
+	width: 100%;
+	cursor: pointer;
+}
+
+mat-card-subtitle {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.user-info-mock {
+	@media (max-width: 700px) {
+		display: none;
+	}
+
+	mat-card-content {
+		display: flex;
+		gap: 20px;
+		align-items: center;
+	}
+}
+
+.user-avatar-mock {
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	flex: 0 0 40px;
+	background: grey;
+}
+
+.user-name-mock {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

@@ -15,18 +15,19 @@ export enum StatusType {
 }
 
 export type Message = {
-	type: MessageType
+	id: string;
+	type: MessageType;
 	content: string | StatusType;
 	sender: Sender;
 	reciever: Reciever;
-}
+};
 
-export type ChatMessage = Pick<Message, 'sender' | 'reciever'> & {
-	type: MessageType.Content,
-	content: string,
-}
+export type ChatMessage = Pick<Message, 'id' | 'sender' | 'reciever'> & {
+	type: MessageType.Content;
+	content: string;
+};
 
-export type StatusMessage = Pick<Message, 'sender' | 'reciever'> & {
+export type StatusMessage = Pick<Message, 'id' | 'sender' | 'reciever'> & {
 	type: MessageType.Status;
 	content: StatusType;
 };
@@ -36,4 +37,3 @@ export type Chat = {
 	messages$: Observable<ChatMessage[]>;
 	status$: Observable<StatusType>;
 };
-

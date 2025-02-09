@@ -1,0 +1,61 @@
+:host {
+	display: flex;
+	flex: 1;
+	width: 100%;
+	background: #dddddd;
+	flex-direction: column;
+	padding: 8px;
+	border-radius: 10px;
+	gap: 20px;
+}
+
+.chat-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex: 0 0 64px;
+}
+
+.messages {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	gap: 20px;
+}
+
+.message {
+	width: 80%;
+	flex: 0 0 64px;
+}
+
+.my-own {
+	align-self: flex-end;
+	background-color: rgba(127, 255, 212, 0.5);
+
+	& a {
+		text-decoration: none;
+		pointer-events: none;
+	}
+}
+
+.input-container {
+	flex: 0 0;
+
+	display: flex;
+	gap: 20px;
+	align-items: baseline;
+}
+
+mat-form-field {
+	flex: 1 1 auto;
+}
+
+button {
+	flex: 0 0 100px;
+}
+
+.sender {
+	font-size: 0.8rem;
+	cursor: pointer;
+}

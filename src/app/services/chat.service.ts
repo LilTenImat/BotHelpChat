@@ -8,18 +8,25 @@ import {
 	Observable,
 	scan,
 	switchMap,
+	tap,
 } from 'rxjs';
-import { Chat, ChatMessage, Reciever, StatusType } from '../config';
+import { Chat, ChatMessage, Reciever, Sender, StatusType } from '../config';
 
 @Injectable()
 export class ChatService {
 	private readonly chatIds = new Set();
-	private readonly chatStore$ = new BehaviorSubject<Chat[]>([]);
+	private readonly chatStore$;
 	private readonly selectedChatId$ = new BehaviorSubject<Reciever | null>(
 		null
 	);
+	private readonly userId;
 
-	constructor(private storage: StorageService) {}
+	constructor(private storage: StorageService, private user: UserService) {
+		this.userId = this.user.id;
+		this.chatStore$ = new BehaviorSubject<Chat[]>([
+			this.getBroadcastChannel(),
+		]);
+	}
 
 	public get chats$(): Observable<Chat[]> {
 		return this.chatStore$.asObservable();
@@ -49,25 +56,52 @@ export class ChatService {
 		]);
 	}
 
-	public selectChat(reciever: Reciever | null): void {
+	public selectChat(reciever: Reciever | null = 'all'): void {
 		this.selectedChatId$.next(reciever);
 	}
 
-	private getChannel(reciever: Reciever): Chat {
+	private getBroadcastChannel(): Chat {
 		const messages$ = this.storage.messages$.pipe(
-			filter((message) => message.reciever === reciever),
+			tap(console.log),
+			filter((message) => message.reciever === 'all'),
 			scan((acc, curr) => [...acc, curr], <ChatMessage[]>[])
 		);
 
 		const status$ = this.storage.statuses$.pipe(
-			filter((message) => message.reciever === reciever),
+			filter((message) => message.reciever === 'all'),
 			map((message) => message.content)
 		);
 
 		return {
-			messages$,
 			status$,
-			reciever,
+			messages$,
+			reciever: 'all',
+		};
+	}
+
+	private getChannel(sender: Sender): Chat {
+		const messages$ = this.storage.messages$.pipe(
+			filter((message) => message.reciever !== 'all'),
+			filter(
+				(message) =>
+					message.sender === sender || message.sender === this.userId
+			),
+			scan((acc, curr) => [...acc, curr], <ChatMessage[]>[])
+		);
+
+		const status$ = this.storage.statuses$.pipe(
+			filter((message) => message.reciever !== 'all'),
+			filter(
+				(message) =>
+					message.sender === sender || message.sender === this.userId
+			),
+			map((message) => message.content)
+		);
+
+		return {
+			status$,
+			messages$,
+			reciever: sender,
 		};
 	}
 }
