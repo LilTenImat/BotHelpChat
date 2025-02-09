@@ -8,8 +8,8 @@ import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BehaviorSubject, map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { UserInfoMockComponent } from '../sidebar/user-info-mock.component';
 import { UserService } from '../../services';
 @Component({

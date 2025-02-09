@@ -8,7 +8,6 @@ import {
 	Observable,
 	scan,
 	switchMap,
-	tap,
 } from 'rxjs';
 import { Chat, ChatMessage, Reciever, Sender, StatusType } from '../config';
 

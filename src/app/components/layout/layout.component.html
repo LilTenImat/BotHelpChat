@@ -4,7 +4,7 @@
 	</button>
 	<span>BotHelpChat</span>
 	<span class="spacer"></span>
-	<app-user-info-mock class="mobile-only" [userName]="userName"/>
+	<app-user-info-mock class="mobile-only" [userName]="userName" />
 </mat-toolbar>
 <mat-drawer-container [hasBackdrop]="false">
 	@let mode =( drawerMode$ | async) || 'side';

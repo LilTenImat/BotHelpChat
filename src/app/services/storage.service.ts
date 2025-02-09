@@ -1,14 +1,12 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-	BehaviorSubject,
 	filter,
 	fromEvent,
 	map,
 	merge,
 	Observable,
-	ReplaySubject,
+	shareReplay,
 	Subject,
-	tap,
 } from 'rxjs';
 import {
 	BROADCAST_CHANNEL_KEY,
@@ -67,11 +65,7 @@ export class StorageService {
 			)
 		);
 
-		const messagesSource$ = new ReplaySubject<ChatMessage>();
-
-		merge(contentSource$, this.localMessage$).subscribe(messagesSource$);
-
-		return messagesSource$;
+		return merge(contentSource$, this.localMessage$).pipe(shareReplay());
 	}
 
 	private getStatuses$(): Observable<StatusMessage> {
